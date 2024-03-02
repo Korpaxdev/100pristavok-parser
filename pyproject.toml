@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "gameshop-parser"
+version = "0.1.0"
+description = ""
+authors = ["korpaxdev <korpaxdev@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+black = "^24.2.0"
+selenium = "^4.18.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 120
