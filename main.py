@@ -1,2 +1,5 @@
+from services.parser import Parser
+
 if __name__ == "__main__":
-    print("initial")
+    parser = Parser()
+    parser.parse()
