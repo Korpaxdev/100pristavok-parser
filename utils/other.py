@@ -1,3 +1,4 @@
+import json
 import shutil
 from pathlib import Path
 from typing import Callable
@@ -31,3 +32,11 @@ def remove_dir_if_exists(dir_path: Path | str):
 
 def str_to_int(value: str) -> int:
     return int(value.strip().replace(" ", ""))
+
+
+def write_to_json(elements: list | dict, file_path: Path) -> Path:
+    if not isinstance(file_path, Path):
+        file_path = Path(file_path)
+    with open(file_path, "w") as file:
+        json.dump(elements, file, indent=4, ensure_ascii=False)
+    return file_path

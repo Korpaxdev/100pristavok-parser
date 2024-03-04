@@ -3,10 +3,8 @@ from typing import NamedTuple
 
 
 class Urls(NamedTuple):
-    CATEGORIES = [
-        "https://100pristavok.ru/catalog/sony_play_station/igry_dlya_playstation/igry_dlya_playstation_5_1/",
-        "https://100pristavok.ru/catalog/sony_play_station/igry_dlya_playstation/igry_dlya_playstation_4/",
-    ]
+    CATEGORIES = []  # список ссылок на категории 100pristavok.ru, которые необходимо спарсить
+    # пример ["https://100pristavok.ru/catalog/sony_play_station/igry_dlya_playstation/igry_dlya_playstation_5_1/"]
 
 
 class Dirs(NamedTuple):
@@ -26,17 +24,20 @@ class Selectors(NamedTuple):
 
 
 class LogMessages(NamedTuple):
+    BASE_SUCCESS = "[bold green]УСПЕШНО![/bold green]"
     PAGE_LOG = "Получаю информацию: {page} страница из {total} страниц в категории {category}"
     BASE_INFO_LOG = "Получаю базовую информацию по элементам"
     BASE_INFO_ELEMENT_DONE = (
         "Базовая информация заполнена: {element} элементов из {total} элементов в категории {category}"
     )
-    BASE_INFO_IS_DONE = "[green bold]УСПЕШНО![/green bold] Базовая информация заполнена"
+    BASE_INFO_IS_DONE = f"{BASE_SUCCESS} Базовая информация заполнена"
     DETAIL_INFO_LOG = "Получаю детальную информацию по элементам"
     DETAIL_INFO_ELEMENT_DONE = (
         "Детальная информация заполнена: {element} элементов из {total} элементов в категории {category}"
     )
-    DETAIL_INFO_IS_DONE = "[green bold]УСПЕШНО![/green bold] Детальная информация заполнена"
+    DETAIL_INFO_IS_DONE = f"{BASE_SUCCESS} Детальная информация заполнена"
+    RESULT_FILE_LOG = f"{BASE_SUCCESS} Результирующий файл создан по пути: %s"
 
 
 PAGE_PARAM = "PAGEN_1"
+RESULT_FILE = "result.json"
