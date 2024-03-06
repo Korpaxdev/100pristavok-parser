@@ -13,21 +13,19 @@ class Parser:
         self._console = Console()
         self._driver = ChromeDriver()
         self._current_category_name = None
-        self._current_dir_category = None
-        self._result_file_path = None
         self.max_page = max_page
-        create_dir_if_not_exists(Dirs.CATEGORIES)
+        self._parsed = []
+        self._result_file_path = Dirs.RESULT / RESULT_FILE
+        create_dir_if_not_exists(Dirs.RESULT)
 
     def parse(self):
         for page_url in Urls.CATEGORIES:
             self._driver.get(page_url)
             self._current_category_name = self._driver.find_element(Selectors.CATEGORY_TITLE).text.strip()
-            self._current_dir_category = create_dir_if_not_exists(Dirs.CATEGORIES / self._current_category_name)
-            self._result_file_path = self._current_dir_category / RESULT_FILE
             elements_info = self._find_elements()
-            write_to_json(elements_info, self._result_file_path)
-
-            self._console.log(LogMessages.RESULT_FILE_LOG % self._result_file_path)
+            self._parsed.append(elements_info)
+        write_to_json(self._parsed, self._result_file_path)
+        self._console.log(LogMessages.RESULT_FILE_LOG % self._result_file_path)
 
     def _find_elements(self) -> list[dict]:
         elements_count_page = int(self._driver.find_elements(Selectors.PAGE_NUM_LINK).pop().text)
@@ -50,8 +48,14 @@ class Parser:
                 for index, element in enumerate(elements):
                     title = self._driver.find_element_in_parent(element, Selectors.ELEMENT_TITLE).text
                     price = self._driver.find_element_in_parent(element, Selectors.ELEMENT_PRICE, raise_exception=False)
+                    category = self._current_category_name
                     url = self._driver.find_element_in_parent(element, Selectors.ELEMENT_URL).get_attribute("href")
-                    base_element_info = {"title": title, "price": str_to_int(price.text) if price else None, "url": url}
+                    base_element_info = {
+                        "title": title,
+                        "price": str_to_int(price.text) if price else None,
+                        "url": url,
+                        "category": category,
+                    }
                     elements_info.append(base_element_info)
 
                     status.console.log(
@@ -71,7 +75,7 @@ class Parser:
                 if image_element:
                     image = str(
                         self._driver.download_file_by_url(
-                            image_element.get_attribute("src"), self._current_dir_category / "images"
+                            image_element.get_attribute("src"), Dirs.IMAGES / self._current_category_name
                         )
                     )
                 detail_info = {"detail": detail.text if detail else None, "image": image}

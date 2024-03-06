@@ -9,7 +9,7 @@ class Urls(NamedTuple):
 
 class Dirs(NamedTuple):
     RESULT = Path("./results")
-    CATEGORIES = RESULT / "categories"
+    IMAGES = RESULT / "images"
 
 
 class Selectors(NamedTuple):
